@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Masonería Chile - Buscador de Logias</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #0b0c10;
+      color: #eaeaea;
+    }
+    header {
+      background: #15171f;
+      padding: 1.5rem 2rem;
+      border-bottom: 1px solid #333;
+    }
+    h1 {
+      margin: 0 0 0.25rem 0;
+      font-size: 1.7rem;
+    }
+    .subtitle {
+      margin: 0;
+      font-size: 0.9rem;
+      color: #b0b0b0;
+    }
+    main {
+      padding: 1.5rem 2rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .search-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+      align-items: end;
+    }
+    .field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+    label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #b0b0b0;
+    }
+    input[type="text"],
+    input[type="number"] {
+      padding: 0.4rem 0.5rem;
+      border-radius: 4px;
+      border: 1px solid #444;
+      background: #111218;
+      color: #eaeaea;
+      font-size: 0.9rem;
+    }
+    input::placeholder {
+      color: #666;
+    }
+    .buttons {
+      display: flex;
+      gap: 0.5rem;
+    }
+    button {
+      padding: 0.45rem 0.8rem;
+      border-radius: 4px;
+      border: none;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+    .btn-primary {
+      background: #c19a36;
+      color: #15171f;
+    }
+    .btn-secondary {
+      background: #262835;
+      color: #eaeaea;
+    }
+    .btn-primary:hover {
+      background: #d8ae43;
+    }
+    .btn-secondary:hover {
+      background: #33364a;
+    }
+    .results-info {
+      font-size: 0.85rem;
+      color: #b0b0b0;
+      margin-bottom: 0.5rem;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+    thead {
+      background: #15171f;
+    }
+    th, td {
+      padding: 0.45rem 0.5rem;
+      border-bottom: 1px solid #333;
+      text-align: left;
+    }
+    th {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #c3c3c3;
+    }
+    tr:nth-child(even) td {
+      background: #12131a;
+    }
+    a {
+      color: #d8ae43;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    @media (max-width: 700px) {
+      main {
+        padding: 1rem;
+      }
+      th, td {
+        font-size: 0.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Masonería Chile</h1>
+    <p class="subtitle">Buscador de logias por número, nombre, ciudad o dirección</p>
+  </header>
+
+  <main>
+    <section class="search-container">
+      <div class="field-group">
+        <label for="numero">Número de Logia</label>
+        <input type="number" id="numero" placeholder="Ej. 65" />
+      </div>
+      <div class="field-group">
+        <label for="nombre">Nombre de Logia</label>
+        <input type="text" id="nombre" placeholder="Ej. Hiram" />
+      </div>
+      <div class="field-group">
+        <label for="ciudad">Ciudad</label>
+        <input type="text" id="ciudad" placeholder="Ej. Santiago" />
+      </div>
+      <div class="field-group">
+        <label for="direccion">Dirección</label>
+        <input type="text" id="direccion" placeholder="Ej. Marcoleta 659" />
+      </div>
+      <div class="field-group">
+        <label>&nbsp;</label>
+        <div class="buttons">
+          <button class="btn-primary" onclick="filtrar()">Buscar</button>
+          <button class="btn-secondary" onclick="limpiar()">Limpiar</button>
+        </div>
+      </div>
+    </section>
+
+    <div class="results-info" id="resultsInfo"></div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Número</th>
+          <th>Nombre</th>
+          <th>Dirección</th>
+          <th>Ciudad</th>
+          <th>Mapa</th>
+        </tr>
+      </thead>
+      <tbody id="tablaLogias">
+      </tbody>
+    </table>
+  </main>
+
+  <script src="logias-data.js"></script>
+  <script>
+    function renderTabla(datos) {
+      const tbody = document.getElementById("tablaLogias");
+      tbody.innerHTML = "";
+      datos.forEach(l => {
+        const tr = document.createElement("tr");
+
+        const tdNum = document.createElement("td");
+        tdNum.textContent = l.numero ?? "";
+        tr.appendChild(tdNum);
+
+        const tdNom = document.createElement("td");
+        tdNom.textContent = l.nombre ?? "";
+        tr.appendChild(tdNom);
+
+        const tdDir = document.createElement("td");
+        tdDir.textContent = l.direccion ?? "";
+        tr.appendChild(tdDir);
+
+        const tdCiudad = document.createElement("td");
+        tdCiudad.textContent = l.ciudad ?? "";
+        tr.appendChild(tdCiudad);
+
+        const tdMapa = document.createElement("td");
+        if (l.mapa) {
+          const a = document.createElement("a");
+          a.href = l.mapa;
+          a.target = "_blank";
+          a.rel = "noopener";
+          a.textContent = "Ver mapa";
+          tdMapa.appendChild(a);
+        } else {
+          tdMapa.textContent = "";
+        }
+        tr.appendChild(tdMapa);
+
+        tbody.appendChild(tr);
+      });
+
+      const info = document.getElementById("resultsInfo");
+      info.textContent = datos.length
+        ? `Mostrando ${datos.length} logia(s).`
+        : "No se encontraron logias con esos criterios.";
+    }
+
+    function normalizarTexto(t) {
+      return (t || "")
+        .toString()
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
+    }
+
+    function filtrar() {
+      const vNumero = document.getElementById("numero").value.trim();
+      const vNombre = normalizarTexto(document.getElementById("nombre").value.trim());
+      const vCiudad = normalizarTexto(document.getElementById("ciudad").value.trim());
+      const vDireccion = normalizarTexto(document.getElementById("direccion").value.trim());
+
+      const filtrados = logias.filter(l => {
+        const numOk = vNumero
+          ? String(l.numero) === vNumero
+          : true;
+
+        const nomOk = vNombre
+          ? normalizarTexto(l.nombre).includes(vNombre)
+          : true;
+
+        const ciudadOk = vCiudad
+          ? normalizarTexto(l.ciudad).includes(vCiudad)
+          : true;
+
+        const dirOk = vDireccion
+          ? normalizarTexto(l.direccion).includes(vDireccion)
+          : true;
+
+        return numOk && nomOk && ciudadOk && dirOk;
+      });
+
+      renderTabla(filtrados);
+    }
+
+    function limpiar() {
+      document.getElementById("numero").value = "";
+      document.getElementById("nombre").value = "";
+      document.getElementById("ciudad").value = "";
+      document.getElementById("direccion").value = "";
+      renderTabla(logias);
+    }
+
+    renderTabla(logias);
+  </script>
+</body>
+</html>
