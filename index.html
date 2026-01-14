@@ -1,22 +1,256 @@
-<thead>
-  <tr>
-    <th>Nº</th>
-    <th>Nombre</th>
-    <th>Ciudad</th>
-    <th>Jurisdicción</th>
-    <th>Día</th>
-    <th>Hora</th>
-    <th>Mapa</th>
-  </tr>
-</thead>
-<tbody>
-  <tr>
-    <td>{{numero_logia}}</td> [file:1]
-    <td>{{nombre_logia}}</td> [file:1]
-    <td>{{ciudad}}</td> [file:1]
-    <td>{{jurisdiccion}}</td> [file:1]
-    <td>{{dia_trabajo}}</td> [file:1]
-    <td>{{hora_trabajo}}</td> [file:1]
-    <td><a href="{{url_maps}}" target="_blank" rel="noopener">Ver en mapa</a></td> [file:1]
-  </tr>
-</tbody>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buscador de Logias Masónicas en Chile</title>
+    <style>
+        /* Estilos minimalistas y sobrios */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Open Sans', -apple-system, sans-serif; background: #f8f8f8; color: #333; line-height: 1.6; padding: 2rem 1rem; max-width: 1400px; margin: 0 auto; }
+        h1 { font-family: Georgia, serif; font-weight: 400; font-size: 2.5rem; color: #1a365d; margin-bottom: 0.5rem; }
+        h2 { font-family: Georgia, serif; font-weight: 400; font-size: 1.5rem; color: #4a5568; margin-bottom: 1.5rem; }
+        .intro { max-width: 800px; margin-bottom: 2rem; }
+        .intro p { margin-bottom: 1rem; }
+        .filters { background: white; border: 1px solid #ddd; border-radius: 8px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .filter-row { display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 1rem; }
+        .filter-row label { font-weight: 500; color: #4a5568; display: block; margin-bottom: 0.25rem; }
+        .filter-row input, .filter-row select { padding: 0.5rem; border: 1px solid #ddd; border-radius: 4px; font-size: 1rem; min-width: 150px; flex: 1; }
+        .btn { background: #1a365d; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 4px; cursor: pointer; font-size: 1rem; transition: opacity 0.2s; }
+        .btn:hover { opacity: 0.9; }
+        .btn-secondary { background: #e2e8f0; color: #4a5568; }
+        .status { background: white; padding: 1rem; border-radius: 4px; margin-bottom: 1rem; text-align: center; font-weight: 500; }
+        table { width: 100%; background: white; border-collapse: collapse; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        th, td { padding: 1rem; text-align: left; border-bottom: 1px solid #eee; }
+        th { background: #f7fafc; font-weight: 500; color: #4a5568; }
+        tr:hover { background: #f7fafc; }
+        .map-link { color: #1a365d; text-decoration: none; font-weight: 500; }
+        .map-link:hover { text-decoration: underline; }
+        .pagination { display: flex; justify-content: center; gap: 0.5rem; margin-top: 2rem; }
+        .loading { text-align: center; padding: 2rem; font-style: italic; color: #718096; }
+        @media (max-width: 768px) { .filter-row { flex-direction: column; } table, thead, tbody, th, td, tr { display: block; } thead tr { position: absolute; top: -9999px; left: -9999px; } tr { border: 1px solid #ddd; margin-bottom: 1rem; padding: 1rem; border-radius: 4px; } td { border: none; position: relative; padding-left: 50%; } td:before { content: attr(data-label); position: absolute; left: 6px; width: 45%; font-weight: 500; color: #4a5568; } }
+        .logo { width: 40px; height: 40px; fill: #1a365d; margin-right: 0.5rem; vertical-align: middle; } /* SVG inline en HTML */
+    </style>
+</head>
+<body>
+    <!-- Logo SVG sutil (escuadra y compás estilizado) -->
+    <svg class="logo" viewBox="0 0 100 100"><rect x="20" y="20" width="60" height="60" rx="5" fill="none" stroke="currentColor" stroke-width="4"/><path d="M30 30 L70 70 M30 70 L70 30" stroke="currentColor" stroke-width="6" stroke-linecap="round"/></svg>
+    
+    <h1>Buscador de Logias Masónicas en Chile</h1>
+    <h2>Información de contacto, horarios y ubicaciones</h2>
+    
+    <div class="intro">
+        <p>Este buscador ofrece información cultural e histórica sobre logias masónicas activas en Chile. Incluye datos de direcciones, ciudades, jurisdicciones y horarios de trabajo, compilados de un listado completo.</p>
+        <p>Utilice los filtros para explorar por número, nombre, ciudad o jurisdicción. Los horarios indican los días y horas de tenidas regulares. Para ubicaciones precisas, active "Ver en mapa".</p>
+        <p>Nota: Este sitio es exclusivamente informativo y no promueve afiliaciones.</p>
+    </div>
+
+    <div class="filters">
+        <div class="filter-row">
+            <div>
+                <label for="numero">Número de logia</label>
+                <input type="number" id="numero" placeholder="ej. 1">
+            </div>
+            <div>
+                <label for="nombre">Nombre</label>
+                <input type="text" id="nombre" placeholder="ej. Unión Fraternal">
+            </div>
+            <div>
+                <label for="ciudad">Ciudad</label>
+                <input type="text" id="ciudad" placeholder="ej. Santiago">
+            </div>
+            <div>
+                <label for="jurisdiccion">Jurisdicción</label>
+                <input type="text" id="jurisdiccion" placeholder="ej. Santiago Centro Delta">
+            </div>
+        </div>
+        <div class="filter-row">
+            <div>
+                <label for="dia">Día</label>
+                <select id="dia">
+                    <option value="">Todos</option>
+                    <option value="Lunes">Lunes</option>
+                    <option value="Martes">Martes</option>
+                    <option value="Miércoles">Miércoles</option>
+                    <option value="Jueves">Jueves</option>
+                    <option value="Viernes">Viernes</option>
+                    <option value="Sábado">Sábado</option>
+                    <option value="Domingo">Domingo</option>
+                </select>
+            </div>
+            <div style="flex: 2;">
+                <label for="hora">Hora aproximada (rango)</label>
+                <input type="range" id="hora" min="180000" max="220000" step="30000" value="193000">
+                <span id="hora-label">19:30</span>
+            </div>
+            <div style="align-self: end;">
+                <button class="btn" onclick="filtrar()">Buscar</button>
+                <button class="btn btn-secondary" onclick="limpiar()">Limpiar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="status" class="status">Ingrese criterios o presione "Buscar" para explorar todas las logias.</div>
+    <div id="loading" class="loading" style="display: none;">Cargando datos del listado...</div>
+    <table id="tabla" style="display: none;">
+        <thead>
+            <tr>
+                <th>Nº</th>
+                <th>Nombre</th>
+                <th>Ciudad</th>
+                <th>Jurisdicción</th>
+                <th>Día</th>
+                <th>Hora</th>
+                <th>Mapa</th>
+            </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+    </table>
+    <div id="noresultados" style="display: none; text-align: center; padding: 2rem; font-size: 1.1rem; color: #718096;">No se encontraron logias con los criterios seleccionados. Pruebe ajustar los filtros.</div>
+    <div id="paginacion" class="pagination" style="display: none;"></div>
+
+    <footer style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid #ddd; text-align: center; color: #718096; font-size: 0.9rem;">
+        Datos informativos de logias masónicas en Chile, actualizados desde listado oficial.
+    </footer>
+
+    <script>
+        let logias = [];
+        let filteredLogias = [];
+        let currentPage = 1;
+        const itemsPerPage = 20;
+
+        // Cargar datos JSON (generado del Excel)
+        async function cargarDatos() {
+            try {
+                const response = await fetch('logias-chile.json');
+                logias = await response.json();
+                filteredLogias = [...logias];
+                mostrarPagina(1);
+            } catch (error) {
+                document.getElementById('status').innerHTML = 'Error al cargar datos. Verifique logias-chile.json.';
+            }
+        }
+
+        function filtrar() {
+            const numero = document.getElementById('numero').value;
+            const nombre = document.getElementById('nombre').value.toLowerCase();
+            const ciudad = document.getElementById('ciudad').value.toLowerCase();
+            const jurisdiccion = document.getElementById('jurisdiccion').value.toLowerCase();
+            const dia = document.getElementById('dia').value.toLowerCase();
+            const hora = parseInt(document.getElementById('hora').value);
+
+            filteredLogias = logias.filter(logia => {
+                return (!numero || logia.numero_logia == numero) &&
+                       (!nombre || logia.nombre_logia.toLowerCase().includes(nombre)) &&
+                       (!ciudad || logia.ciudad.toLowerCase().includes(ciudad)) &&
+                       (!jurisdiccion || logia.jurisdiccion.toLowerCase().includes(jurisdiccion)) &&
+                       (!dia || logia.dia_trabajo.toLowerCase().includes(dia)) &&
+                       (!hora || parseInt(logia.hora_trabajo) >= hora - 30000 && parseInt(logia.hora_trabajo) <= hora + 30000);
+            });
+
+            currentPage = 1;
+            mostrarPagina(1);
+        }
+
+        function limpiar() {
+            document.querySelectorAll('.filters input, .filters select').forEach(el => el.value = '');
+            document.getElementById('hora-label').textContent = '19:30';
+            filteredLogias = [...logias];
+            currentPage = 1;
+            mostrarPagina(1);
+        }
+
+        function mostrarPagina(page) {
+            const start = (page - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const pageLogias = filteredLogias.slice(start, end);
+
+            const tbody = document.getElementById('tbody');
+            tbody.innerHTML = '';
+
+            if (pageLogias.length === 0) {
+                document.getElementById('tabla').style.display = 'none';
+                document.getElementById('noresultados').style.display = 'block';
+                document.getElementById('paginacion').style.display = 'none';
+                document.getElementById('status').innerHTML = 'No se encontraron logias con los criterios seleccionados.';
+                return;
+            }
+
+            pageLogias.forEach(logia => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td data-label="Nº">${logia.numero_logia}</td>
+                    <td data-label="Nombre">${logia.nombre_logia}</td>
+                    <td data-label="Ciudad">${logia.ciudad}</td>
+                    <td data-label="Jurisdicción">${logia.jurisdiccion}</td>
+                    <td data-label="Día">${logia.dia_trabajo}</td>
+                    <td data-label="Hora">${formatearHora(logia.hora_trabajo)}</td>
+                    <td data-label="Mapa"><a href="${logia.url_maps}" target="_blank" rel="noopener" class="map-link">Ver en mapa</a></td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            document.getElementById('tabla').style.display = 'table';
+            document.getElementById('noresultados').style.display = 'none';
+            document.getElementById('status').innerHTML = `Mostrando ${filteredLogias.length} de ${logias.length} logias.`;
+            generarPaginacion(page);
+        }
+
+        function formatearHora(hhmmss) {
+            if (!hhmmss) return '';
+            const hh = hhmmss.slice(0,2);
+            const mm = hhmmss.slice(2,4);
+            return `${hh}:${mm}`;
+        }
+
+        function generarPaginacion(current) {
+            const totalPages = Math.ceil(filteredLogias.length / itemsPerPage);
+            const paginacion = document.getElementById('paginacion');
+            paginacion.innerHTML = '';
+
+            if (totalPages <= 1) {
+                paginacion.style.display = 'none';
+                return;
+            }
+
+            paginacion.style.display = 'flex';
+
+            const prev = document.createElement('button');
+            prev.className = 'btn btn-secondary';
+            prev.textContent = 'Anterior';
+            prev.disabled = current === 1;
+            prev.onclick = () => { if (current > 1) mostrarPagina(current - 1); };
+            paginacion.appendChild(prev);
+
+            for (let i = 1; i <= totalPages; i++) {
+                const btn = document.createElement('button');
+                btn.className = 'btn btn-secondary';
+                btn.textContent = i;
+                if (i === current) btn.style.background = '#1a365d';
+                btn.onclick = () => mostrarPagina(i);
+                paginacion.appendChild(btn);
+            }
+
+            const next = document.createElement('button');
+            next.className = 'btn btn-secondary';
+            next.textContent = 'Siguiente';
+            next.disabled = current === totalPages;
+            next.onclick = () => { if (current < totalPages) mostrarPagina(current + 1); };
+            paginacion.appendChild(next);
+        }
+
+        // Event listeners
+        document.getElementById('hora').addEventListener('input', (e) => {
+            const val = parseInt(e.target.value);
+            const hh = Math.floor(val / 10000).toString().padStart(2, '0');
+            const mm = ((val / 100) % 100).toString().padStart(2, '0');
+            document.getElementById('hora-label').textContent = `${hh}:${mm}`;
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('loading').style.display = 'block';
+            cargarDatos();
+        });
+    </script>
+</body>
+</html>
