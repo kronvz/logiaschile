@@ -1,0 +1,152 @@
+[
+  {
+    "numero": 1,
+    "nombre": "Unión Fraternal",
+    "direccion": "Av. Providencia 1234",
+    "ciudad": "Santiago",
+    "jurisdiccion": "Gran Logia de Chile",
+    "dias": "Martes",
+    "hora": "19:30",
+    "url_maps": "https://maps.google.com/?q=Av.+Providencia+1234,+Santiago"
+  },
+  {
+    "numero": 2,
+    "nombre": "Luz del Sur",
+    "direccion": "Calle O'Higgins 567",
+    "ciudad": "Valparaíso",
+    "jurisdiccion": "Gran Logia de Chile",
+    "dias": "Jueves",
+    "hora": "20:00",
+    "url_maps": "https://maps.google.com/?q=Calle+O'Higgins+567,+Valparaíso"
+  },
+  {
+    "numero": 3,
+    "nombre": "Estrella de Oriente",
+    "direccion": "Av. Libertad 890",
+    "ciudad": "Concepción",
+    "jurisdiccion": "Gran Logia de Chile",
+    "dias": "Miércoles",
+    "hora": "19:00",
+    "url_maps": "https://maps.google.com/?q=Av.+Libertad+890,+Concepción"
+  },
+  {
+    "numero": 4,
+    "nombre": "Fraternidad del Norte",
+    "direccion": "Calle Baquedano 345",
+    "ciudad": "Antofagasta",
+    "jurisdiccion": "Gran Logia de Chile",
+    "dias": "Lunes",
+    "hora": "19:30",
+    "url_maps": "https://maps.google.com/?q=Calle+Baquedano+345,+Antofagasta"
+  },
+  {
+    "numero": 5,
+    "nombre": "Acacia del Valle",
+    "direccion": "Av. San Martín 678",
+    "ciudad": "Rancagua",
+    "jurisdiccion": "Gran Logia de Chile",
+    "dias": "Viernes",
+    "hora": "20:30",
+    "url_maps": "https://maps.google.com/?q=Av.+San+Martín+678,+Rancagua"
+  },
+  {
+    "numero": 6,
+    "nombre": "Columnas del Templo",
+    "direccion": "Calle Maipú 123",
+    "ciudad": "La Serena",
+    "jurisdiccion": "Gran Logia de Chile",
+    "dias": "Sábado",
+    "hora": "18:00",
+    "url_maps": "https://maps.google.com/?q=Calle+Maipú+123,+La+Serena"
+  },
+  {
+    "numero": 7,
+    "nombre": "Hermanos Unidos",
+    "direccion": "Av. Costanera 456",
+    "ciudad": "Puerto Montt",
+    "jurisdiccion": "Gran Logia de Chile",
+    "dias": "Martes",
+    "hora": "19:00",
+    "url_maps": "https://maps.google.com/?q=Av.+Costanera+456,+Puerto+Montt"
+  },
+  {
+    "numero": 8,
+    "nombre": "Virtud y Trabajo",
+    "direccion": "Calle Arturo Prat 789",
+    "ciudad": "Iquique",
+    "jurisdiccion": "Gran Logia de Chile",
+    "dias": "Jueves",
+    "hora": "20:00",
+    "url_maps": "https://maps.google.com/?q=Calle+Arturo+Prat+789,+Iquique"
+  },
+  {
+    "numero": 9,
+    "nombre": "Sabiduría Eterna",
+    "direccion": "Av. Pedro Montt 234",
+    "ciudad": "Valdivia",
+    "jurisdiccion": "Gran Logia de Chile",
+    "dias": "Miércoles",
+    "hora": "19:30",
+    "url_maps": "https://maps.google.com/?q=Av.+Pedro+Montt+234,+Valdivia"
+  },
+  {
+    "numero": 10,
+    "nombre": "Progreso y Libertad",
+    "direccion": "Calle Independencia 567",
+    "ciudad": "Temuco",
+    "jurisdiccion": "Gran Logia de Chile",
+    "dias": "Lunes",
+    "hora": "20:00",
+    "url_maps": "https://maps.google.com/?q=Calle+Independencia+567,+Temuco"
+  },
+  {
+    "numero": 11,
+    "nombre": "Aurora Boreal",
+    "direccion": "Av. Bulnes 890",
+    "ciudad": "Punta Arenas",
+    "jurisdiccion": "Gran Logia de Chile",
+    "dias": "Viernes",
+    "hora": "19:00",
+    "url_maps": "https://maps.google.com/?q=Av.+Bulnes+890,+Punta+Arenas"
+  },
+  {
+    "numero": 12,
+    "nombre": "Justicia y Verdad",
+    "direccion": "Calle Cochrane 345",
+    "ciudad": "Chillán",
+    "jurisdiccion": "Gran Logia de Chile",
+    "dias": "Martes",
+    "hora": "19:30",
+    "url_maps": "https://maps.google.com/?q=Calle+Cochrane+345,+Chillán"
+  },
+  {
+    "numero": 13,
+    "nombre": "Esperanza del Futuro",
+    "direccion": "Av. Brasil 678",
+    "ciudad": "Viña del Mar",
+    "jurisdiccion": "Gran Logia de Chile",
+    "dias": "Jueves",
+    "hora": "20:30",
+    "url_maps": "https://maps.google.com/?q=Av.+Brasil+678,+Viña+del+Mar"
+  },
+  {
+    "numero": 14,
+    "nombre": "Unión y Progreso",
+    "direccion": "Calle Errázuriz 123",
+    "ciudad": "Copiapó",
+    "jurisdiccion": "Gran Logia de Chile",
+    "dias": "Sábado",
+    "hora": "18:30",
+    "url_maps": "https://maps.google.com/?q=Calle+Errázuriz+123,+Copiapó"
+  },
+  {
+    "numero": 15,
+    "nombre": "Luz y Verdad",
+    "direccion": "Av. Alemania 456",
+    "ciudad": "Osorno",
+    "jurisdiccion": "Gran Logia de Chile",
+    "dias": "Miércoles",
+    "hora": "19:00",
+    "url_maps": "https://maps.google.com/?q=Av.+Alemania+456,+Osorno"
+  }
+]
